@@ -1,0 +1,43 @@
+embalagem_dominante = (pricing_cluster.groupby(['cluster', 'familia_final'], observed=True)['Prod - Embalagem']
+    .agg(lambda s: s.value_counts().idxmax()))
+embalagem_dominante.name = 'embalagem_dominante'
+embalagem_dominante = embalagem_dominante.reset_index().rename(columns={'familia_final': 'familia_principal'})
+
+devol_map = customer_features_full.set_index('Código Cliente')['taxa_devolucao']
+segmentacao_completa['taxa_devolucao'] = segmentacao_completa['Código Cliente'].map(devol_map)
+risco_por_segmento = segmentacao_completa.groupby(['cluster', 'familia_principal'], observed=True)['taxa_devolucao'].mean()
+risco_por_segmento.name = 'taxa_devolucao_media'
+
+SLA_POR_FREQ = {'Frequentes': '7-10 dias', 'Regulares': '15 dias', 'Ocasionais': '20+ dias'}
+PROMOCAO_POR_FREQ = {'Frequentes': 'Customização/conta dedicada', 'Regulares': 'Programa de fidelização',
+                      'Ocasionais': 'Desconto por volume (oferta pontual)'}
+
+recomendacoes = segmentos.merge(embalagem_dominante, on=['cluster', 'familia_principal'], how='left').merge(
+    risco_por_segmento.reset_index(), on=['cluster', 'familia_principal'], how='left'
+)
+
+recomendacoes['preco_min'] = (recomendacoes['preco_ponderado'] * 0.95).round(2)
+recomendacoes['preco_max'] = (recomendacoes['preco_ponderado'] * 1.05).round(2)
+recomendacoes['sla_entrega'] = recomendacoes['frequencia_dominante'].map(SLA_POR_FREQ).fillna('a definir')
+recomendacoes['estrategia_promocao'] = recomendacoes['frequencia_dominante'].map(PROMOCAO_POR_FREQ).fillna('a definir')
+
+def classificar_risco(row):
+    margem_baixa = row['margem_pct_ponderada'] < recomendacoes['margem_pct_ponderada'].median()
+    devolucao_alta = row['taxa_devolucao_media'] > recomendacoes['taxa_devolucao_media'].median()
+    if margem_baixa and devolucao_alta:
+        return 'Alto'
+    if margem_baixa or devolucao_alta:
+        return 'Médio'
+    return 'Baixo'
+
+recomendacoes['risco'] = recomendacoes.apply(classificar_risco, axis=1)
+
+cols_rec = ['cluster', 'familia_principal', 'clientes_unicos', 'volume_total', 'preco_ponderado',
+            'preco_min', 'preco_max', 'margem_pct_ponderada', 'embalagem_dominante',
+            'frequencia_dominante', 'sla_entrega', 'estrategia_promocao', 'risco']
+recomendacoes_final = recomendacoes[cols_rec].sort_values(['cluster', 'volume_total'], ascending=[True, False])
+print("RECOMENDAÇÕES COMERCIAIS POR SEGMENTO")
+display(recomendacoes_final)
+
+recomendacoes_final.to_csv(OUTPUT_DIR / 'recomendacoes_comerciais.csv', index=False, encoding='utf-8-sig')
+print("✓ recomendacoes_comerciais.csv salvo")

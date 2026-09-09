@@ -1,0 +1,197 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   🎯 VIBRA LUBRAX — ELASTICIDADE PREÇO-DEMANDA                              ║
+║   QUICK START GUIDE                                                         ║
+║                                                                              ║
+║   Projeto: Modelar elasticidade para pricing diferenciado                   ║
+║   Data: Setembro 2026                                                       ║
+║   Duração: 3-5 dias (Fase 1 + Fase 2)                                       ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 1️⃣  EM 30 SEGUNDOS                                                           │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+ELASTICIDADE = (% mudança no volume) / (% mudança no preço)
+
+EXEMPLO:
+  Preço sobe 10% → Volume cai 5%?
+  Elasticidade = -5% / 10% = -0.5 (inelástico)
+
+💡 Se inelástico: subir preço aumenta receita
+   Se elástico: reduzir preço aumenta receita
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 2️⃣  PRÓXIMOS 5 MINUTOS                                                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Abra: RESUMO_EXECUTIVO_ELASTICIDADE.md
+
+Leia:
+  ✓ Seção: "O Que é Elasticidade?" (2 min)
+  ✓ Seção: "3 Cenários de Resultado Esperado" (2 min)
+  ✓ Seção: "Como Usar Os Resultados" (1 min)
+
+Total: ~5 min. Você entenderá o conceito e o impacto.
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 3️⃣  PRÓXIMOS 30 MINUTOS (Se você vai implementar)                           │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Abra: ESTRATEGIA_ELASTICIDADE_PRECO_DEMANDA.md
+
+Leia:
+  ✓ Seção 1: "Definição do Problema" (3 min)
+  ✓ Seção 2: "Fundamentação Teórica" (5 min)
+  ✓ Seção 3: "Estratégia Geral" (2 min)
+  ✓ Seção 4: "Fase 1 — EDA" (Visão geral, 15 min)
+
+Depois: Volte para o template Python
+
+Total: ~30 min. Você saberá COMO fazer.
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 4️⃣  FLUXO DE IMPLEMENTAÇÃO (3-5 DIAS)                                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+DIA 1-2: FASE 1 — EDA (Exploração)
+├─ Carregamento & limpeza
+├─ Validar variação de preço (CV > 5%?)
+├─ Série temporal (sazonalidade)
+├─ Análise por cluster
+├─ Gerar gráficos (5 arquivos PNG)
+└─ 🔴 DECISION GATE: Há variância suficiente? ✅ SIM → próximo / ❌ NÃO → revisar
+
+DIA 3-4: FASE 2 — MODELAGEM (Regressão)
+├─ Modelo 1: Agregado (baseline)
+├─ Modelo 2: Por cluster (5 modelos)
+├─ Modelo 3: Por cluster × família (até 44 segmentos)
+├─ Modelo 4: Painel com efeitos fixos
+├─ Modelo 5: Robustez (testes alternativos)
+└─ Tabelas de coeficientes
+
+DIA 5: SIMULAÇÃO & RECOMENDAÇÕES
+├─ Cenários de preço (-10%, -5%, +5%, +10%)
+├─ Impacto em receita/volume
+├─ Recomendações por segmento
+├─ Excel consolidado (6 abas)
+└─ ✅ Pronto para entrega
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 5️⃣  COMO COMEÇAR (AGORA!)                                                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+🔹 Abra: INDICE_COMPLETO.md
+   → Navegar por "Fluxo Recomendado"
+   → Selecionar seu perfil (Executivo, PM, Data Scientist, Comercial)
+
+🔹 OU: Comece direto
+   1. Abrir: RESUMO_EXECUTIVO_ELASTICIDADE.md (5 min)
+   2. Confirmar com PM: "Vamos fazer elasticidade?"
+   3. Abrir: ROADMAP_IMPLEMENTACAO.md (cronograma Dia 1)
+   4. Abrir novo Jupyter Notebook: 5.EDA_elasticidade.ipynb
+   5. Copiar conteúdo de: template_5_EDA_elasticidade_skeleton.py
+   6. Executar seção por seção
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 6️⃣  ESTRUTURA DE DOCUMENTOS                                                  │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+📚 ESTRATEGIA_ELASTICIDADE_PRECO_DEMANDA.md
+   → Completa: conceitos, fórmulas, métodos, código
+
+⚙️  ARQUITETURA_ELASTICIDADE.md
+   → Técnica: fluxo de dados, specs, pressupostos, troubleshooting
+
+📅 ROADMAP_IMPLEMENTACAO.md
+   → Cronograma: Dia 1-5, tarefas, decision gates, outputs
+
+🌟 RESUMO_EXECUTIVO_ELASTICIDADE.md
+   → Rápido: para executivos, comercial, PM
+
+📖 INDICE_COMPLETO.md
+   → Navegação: por pergunta, por perfil, glossário
+
+💻 template_5_EDA_elasticidade_skeleton.py
+   → Código Python: Fase 1 (copy/paste para Jupyter)
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 7️⃣  OUTPUTS ESPERADOS                                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+APÓS FASE 1 (DIA 2):
+  ├─ 01_eda_preco_volume.png
+  ├─ 02_eda_serie_temporal.png
+  ├─ 03_decomposicao_stl.png
+  ├─ 04_eda_por_cluster.png
+  ├─ 05_correlacao_features.png
+  └─ EDA_ELASTICIDADE_RELATORIO.csv
+
+APÓS FASE 2 (DIA 5):
+  ├─ 10_elasticidade_por_cluster.png
+  ├─ elasticidade_coeficientes.csv
+  ├─ elasticidade_ic.csv
+  ├─ simulacao_cenarios_*.csv
+  ├─ recomendacoes_pricing.csv
+  └─ 📊 elasticidade_resultados_final.xlsx ⭐ (CONSOLIDADO)
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 8️⃣  DECISÕES IMPORTANTES                                                     │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+❓ Qual é a granularidade operacional?
+   → Por cluster? Por cluster × família? Por cliente individual?
+   → Definir com PM ANTES de começar Fase 2
+
+❓ Há dados de concorrente/custo para usar como instrumentos?
+   → Se SIM: adiciona robustez (controla endogeneidade)
+   → Se NÃO: usar regressão com lags
+
+❓ Qual período devemos focar?
+   → Padrão: todo histórico (jan/2023 – set/2026)
+   → Se variância baixa: expandir retrospectiva ou simplificar segmentos
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 9️⃣  CHECKLIST: ESTOU PRONTO?                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+☑️  Tenho acesso a base_Lubrax_origem.xlsx? (outputs/cache/.pkl ou inputs/raw/)
+☑️  Tenho Python 3.10+ com pandas, numpy, matplotlib, seaborn, statsmodels?
+☑️  Li RESUMO_EXECUTIVO_ELASTICIDADE.md?
+☑️  Confirmei com PM: "Vamos proceder?"
+☑️  Criei pasta outputs/3.Elasticidade/ ?
+☑️  Abri Jupyter e tenho template_5_EDA em mão?
+
+✅ SIM para tudo? VAMOS COMEÇAR! 🚀
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 🔟  CONTATOS & DÚVIDAS                                                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+📖 Dúvida teórica?
+   → ESTRATEGIA_ELASTICIDADE_PRECO_DEMANDA.md + RESUMO_EXECUTIVO
+
+⚙️  Dúvida técnica/implementação?
+   → ARQUITETURA_ELASTICIDADE.md + template_5_EDA
+
+📅 Dúvida sobre timing/priorização?
+   → ROADMAP_IMPLEMENTACAO.md
+
+🧭 Não sabe por onde começar?
+   → INDICE_COMPLETO.md → Fluxo Recomendado
+
+═══════════════════════════════════════════════════════════════════════════════
+
+                              ✨ BOA SORTE! ✨
+
+                         Você tem tudo que precisa.
+                    Agora é só executar, passo a passo.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Versão: 1.0
+Data: Setembro 2026
+Projeto: Vibra Lubrax — Elasticidade Preço-Demanda
+Status: ✅ Pronto para usar
+

@@ -1,0 +1,179 @@
+/*
+  Tema visual Volix — CSS puro
+  Extraído de Script/tema_visual.py (projeto Comolatti) para uso em
+  dashboards HTML, artifacts e relatórios fora do Jupyter.
+*/
+
+:root {
+  --volix-primary: #1B9AAA;
+  --volix-accent: #06D6A0;
+  --volix-accent-light: #7EF3C4;
+  --volix-border: #7EF3C4;
+  --volix-ink: #F7FFF9;
+  --volix-muted: #A7B8B2;
+  --volix-panel: #171717;
+  --volix-panel-soft: #1F1F1F;
+  --volix-panel-strong: #111111;
+  --volix-warning: #FFD166;
+
+  --volix-grid: #222222;
+  --volix-spine: #333333;
+}
+
+body {
+  background: var(--volix-panel-strong);
+  color: var(--volix-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.58;
+}
+
+h1, h2, h3 {
+  color: var(--volix-ink);
+  font-weight: 850;
+  letter-spacing: 0;
+}
+
+code {
+  background: #1B1B1B;
+  color: var(--volix-accent-light);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* Cabeçalho de seção: uppercase, acento, letter-spacing largo */
+.volix-section-header {
+  color: var(--volix-accent-light);
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 18px 0 8px 0;
+}
+
+.volix-section-header .badge {
+  background: var(--volix-accent-light);
+  color: var(--volix-panel-strong);
+  font-weight: 900;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* Painel genérico (usado por KPIs, tabelas, avisos) */
+.volix-panel {
+  border: 2px solid var(--volix-border);
+  background: var(--volix-panel-strong);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 8px 0;
+}
+
+/* Painel de KPIs */
+.volix-kpi-title {
+  color: var(--volix-accent-light);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  margin-bottom: 12px;
+}
+
+.volix-kpi-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.volix-kpi-card {
+  flex: 1;
+  min-width: 130px;
+  border: 2px solid var(--volix-accent-light); /* sobrescreva por card se a cor variar por KPI */
+  background: var(--volix-panel);
+  border-radius: 8px;
+  padding: 14px 16px;
+  box-sizing: border-box;
+}
+
+.volix-kpi-label {
+  color: var(--volix-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  margin-bottom: 6px;
+}
+
+.volix-kpi-value {
+  color: var(--volix-accent-light); /* sobrescreva por card se a cor variar por KPI */
+  font-size: 22px;
+  font-weight: 900;
+  font-family: monospace;
+}
+
+/* Tabela estilizada */
+.volix-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.volix-table th {
+  background: rgba(6, 214, 160, .20);
+  color: #FFFFFF;
+  border-bottom: 4px solid var(--volix-border);
+  padding: 8px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.volix-table td {
+  color: var(--volix-ink);
+  border-bottom: 1px solid rgba(221, 247, 236, .08);
+  padding: 7px 12px;
+  white-space: nowrap;
+}
+
+/* Nota de aviso */
+.volix-warning {
+  border: 2px solid var(--volix-warning);
+  background: rgba(255, 209, 102, .08);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 8px 0;
+}
+
+.volix-warning-title {
+  color: var(--volix-warning);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  margin-bottom: 8px;
+}
+
+.volix-warning-body {
+  color: var(--volix-ink);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Dataframes / tabelas genéricas (equivalente ao CSS injetado no Jupyter) */
+.dataframe {
+  background: var(--volix-panel);
+  color: var(--volix-ink);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 3px solid var(--volix-border);
+}
+
+.dataframe th {
+  background: rgba(6, 214, 160, .20);
+  color: #FFFFFF;
+  border-bottom: 4px solid var(--volix-border);
+}
+
+.dataframe td {
+  color: var(--volix-ink);
+  border-color: rgba(221, 247, 236, .12);
+}

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Segmentação de Clientes — Guia para o Time Comercial</title>
+<style>
+:root { --volix:#7EF3C4; --dark:#101312; --panel:#171b19; --panel2:#1c2320; --text:#f5fff9; --muted:#a9bbb3; --line:#2d3a35; --warn:#FFD166; }
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body { background:var(--dark); color:var(--text); font-family:Inter,Segoe UI,Arial,sans-serif; line-height:1.7; font-size:16px; }
+.wrap { max-width:880px; margin:0 auto; padding:40px 30px 100px; }
+
+.executive-summary { border:3px solid var(--volix); border-radius:14px; padding:34px 38px; margin:0 0 40px; background:linear-gradient(135deg,#10251f,#121513 70%); }
+.eyebrow { color:var(--volix); font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:12px; margin:0 0 12px; }
+.executive-summary h1 { font-size:32px; margin:0 0 14px; line-height:1.25; }
+.executive-summary .lead { color:var(--muted); font-size:17px; max-width:720px; margin:0; }
+
+h2 { font-size:23px; border-bottom:2px solid var(--volix); padding-bottom:10px; margin:52px 0 20px; }
+h3 { color:var(--volix); font-size:17px; margin:28px 0 12px; }
+p { margin:0 0 16px; }
+ul, ol { margin:0 0 16px; padding-left:24px; }
+li { margin-bottom:10px; }
+b, strong { color:var(--volix); }
+
+.callout { border:2px solid var(--volix); border-radius:10px; padding:18px 22px; background:rgba(126,243,196,.06); margin:20px 0; }
+.callout b.title { display:block; text-transform:uppercase; font-size:11px; letter-spacing:.1em; margin-bottom:8px; }
+.warn-box { border:2px solid var(--warn); background:rgba(255,209,102,.08); border-radius:10px; padding:18px 22px; margin:20px 0; }
+.warn-box b.title { color:var(--warn); display:block; text-transform:uppercase; font-size:11px; letter-spacing:.1em; margin-bottom:8px; }
+.warn-box b { color:var(--warn); }
+
+.analogy { border-left:4px solid var(--volix); background:var(--panel2); border-radius:0 10px 10px 0; padding:16px 22px; margin:20px 0; }
+.analogy .tag { color:var(--volix); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.1em; display:block; margin-bottom:8px; }
+
+.steps { counter-reset:step; list-style:none; padding-left:0; }
+.steps li { counter-increment:step; position:relative; padding-left:44px; margin-bottom:18px; }
+.steps li::before { content: counter(step); position:absolute; left:0; top:0; width:30px; height:30px; border-radius:8px; background:var(--panel2); border:1px solid var(--line); color:var(--volix); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:14px; }
+
+table { width:100%; border-collapse:collapse; border:2px solid var(--volix); background:var(--panel2); font-size:14.5px; margin:16px 0 24px; }
+th { background:#0e5146; color:#fff; padding:11px 14px; border-bottom:3px solid var(--volix); text-align:left; }
+td { padding:10px 14px; border-bottom:1px solid var(--line); color:var(--text); vertical-align:top; }
+tbody tr:nth-child(even) td { background:#1f2622; }
+
+img.fig { display:block; max-width:100%; height:auto; margin:20px auto 8px; border-radius:8px; border:1px solid var(--line); }
+.img-caption { text-align:center; color:var(--muted); font-size:13.5px; margin:0 0 8px; }
+
+.faq-item { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 20px; margin-bottom:12px; }
+.faq-item .q { color:var(--volix); font-weight:700; margin-bottom:8px; }
+
+footer.foot { margin-top:50px; padding-top:20px; border-top:1px solid var(--line); font-size:13px; color:var(--muted); }
+footer.foot code { background:var(--panel2); padding:1px 6px; border-radius:4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="executive-summary">
+  <p class="eyebrow">Guia para o time comercial · Setembro de 2026</p>
+  <h1>Como agrupamos os clientes da Vibra Lubrax — e por quê</h1>
+  <p class="lead">Este documento explica, sem jargão técnico, o que fizemos para dividir os 7.176 clientes
+  ativos em 5 grupos com perfis de compra diferentes — e como isso pode apoiar decisões de preço,
+  atendimento e promoção. Não é preciso saber nada de estatística ou programação para acompanhar.</p>
+</div>
+
+<h2>1. Por que agrupar clientes?</h2>
+<p>Hoje, é fácil pensar nos clientes da Vibra Lubrax como uma massa única — mais de 7 mil empresas
+diferentes comprando lubrificante. Mas eles não compram do mesmo jeito: alguns compram um volume enorme
+todo mês, outros compram pouco e raramente; alguns pagam mais por unidade, outros menos; alguns devolvem
+produto com frequência, outros nunca.</p>
+<p>Se conseguirmos identificar <b>grupos de clientes que se parecem entre si</b>, fica mais fácil pensar em
+políticas diferentes para cada grupo — preço, prazo de entrega, tipo de promoção — em vez de tratar
+todo mundo com a mesma régua. É esse o objetivo de todo o trabalho descrito aqui.</p>
+
+<h2>2. O que é "clusterização"?</h2>
+<p><b>Clusterização</b> é o nome técnico para "agrupar coisas parecidas automaticamente". Em vez de alguém
+decidir manualmente "esses são os clientes grandes, esses são os pequenos", um algoritmo olha várias
+características de cada cliente ao mesmo tempo e forma os grupos que realmente aparecem nos dados —
+sem ninguém dizer de antemão quais grupos deveriam existir.</p>
+<div class="analogy">
+  <span class="tag">Para visualizar</span>
+  Imagine uma sala cheia de bolinhas de tamanhos e cores diferentes espalhadas em cima de uma mesa.
+  Clusterização é o processo de empurrar as bolinhas parecidas para pertinho umas das outras, até formarem
+  monte naturais — sem que ninguém tenha dito antes quantos montes deveriam se formar ou onde.
+  Cada "bolinha" aqui é um cliente; a "cor e tamanho" são os hábitos de compra dele.
+</div>
+
+<h2>3. Como o método usado (K-Means) funciona</h2>
+<p>Existem várias formas de fazer clusterização. Usamos uma das mais consolidadas e fáceis de explicar,
+chamada <b>K-Means</b>. O nome vem de "K médias": você escolhe quantos grupos quer (o "K" — no nosso caso,
+5) e o algoritmo encontra a média de cada grupo, repetidamente, até estabilizar.</p>
+<ol class="steps">
+  <li><b>Escolhe-se quantos grupos formar.</b> Decidimos K = 5 (o porquê está na seção 5).</li>
+  <li><b>O algoritmo "chuta" 5 clientes médios imaginários</b> — um representante inicial para cada grupo.</li>
+  <li><b>Cada cliente real é colocado no grupo do representante mais parecido com ele</b> (comparando
+  volume, preço, margem, frequência, devolução e diversidade de produtos, todos ao mesmo tempo).</li>
+  <li><b>O algoritmo recalcula o representante de cada grupo</b>, agora como a média de verdade de quem
+  entrou naquele grupo.</li>
+  <li><b>Repete os passos 3 e 4</b> várias vezes, até os clientes pararem de trocar de grupo — nesse ponto,
+  o resultado estabilizou.</li>
+</ol>
+<div class="analogy">
+  <span class="tag">Para visualizar</span>
+  É parecido com organizar um evento em 5 mesas por afinidade: no começo você escolhe 5 pessoas
+  aleatórias como "representante" de cada mesa. Todo mundo senta na mesa do representante mais parecido
+  com ele. Depois, você troca cada representante pela "pessoa média" de quem sentou naquela mesa, e pede
+  para todo mundo reavaliar se ainda está na mesa certa. Repete até ninguém mais trocar de mesa.
+</div>
+
+<h2>4. O que olhamos em cada cliente</h2>
+<p>Para comparar os clientes, resumimos o comportamento de compra de cada um em <b>6 números</b>. Testamos
+outras métricas também, mas descartamos as que só repetiam a mesma informação de outra forma (por
+exemplo, "receita total" e "volume total" praticamente contam a mesma história de tamanho do cliente —
+usar as duas seria contar o mesmo ponto duas vezes).</p>
+<table>
+<thead><tr><th>O que mede</th><th>Explicação simples</th></tr></thead>
+<tbody>
+<tr><td><b>Volume</b></td><td>Quanto o cliente compra no total, em m³ (1 m³ = 1.000 litros)</td></tr>
+<tr><td><b>Preço médio pago</b></td><td>Quanto o cliente paga, em média, por m³ comprado — misturando
+todos os produtos que ele leva. Não é "ticket médio" (não é sobre o valor de uma compra isolada), é sobre
+quanto custa, na média, uma unidade de volume para aquele cliente</td></tr>
+<tr><td><b>Margem</b></td><td>Quão lucrativa é a relação com aquele cliente, em % da receita</td></tr>
+<tr><td><b>Frequência</b></td><td>Quantas vezes por mês, em média, o cliente compra</td></tr>
+<tr><td><b>Devolução</b></td><td>Com que frequência os pedidos desse cliente voltam como devolução</td></tr>
+<tr><td><b>Diversidade de produtos</b></td><td>Quantos produtos diferentes o cliente compra</td></tr>
+</tbody>
+</table>
+
+<h2>5. O caminho até o resultado final</h2>
+<p>Não acertamos de primeira. Testamos 5 configurações diferentes antes de chegar no resultado final —
+vale contar essa história porque a primeira tentativa é um bom alerta sobre como números "bonitos" podem
+enganar.</p>
+<p>A primeira tentativa usou uma métrica estatística para escolher automaticamente quantos grupos formar,
+e o resultado pareceu ótimo nos números. Só que, ao olhar de perto, essa configuração tinha simplesmente
+separado uma dúzia de clientes com valores muito fora do padrão — e jogado <b>todo o resto da base (mais
+de 99% dos clientes) num único grupo</b>. Estatisticamente "perfeito", mas inútil para o negócio: não
+ajuda a diferenciar política de preço para 7 mil clientes.</p>
+<p>A partir daí, fomos ajustando: primeiro tratamos esses valores extremos separadamente (sem descartar
+os clientes, só evitando que eles distorçam o resultado), depois testamos diferentes quantidades de
+grupos, e por fim adicionamos a variável de diversidade de produtos, que melhorou a qualidade da divisão.
+O resultado final — 5 grupos — foi o que equilibrou melhor duas coisas: ser estatisticamente consistente
+<i>e</i> gerar grupos de tamanho útil para o negócio (nenhum grupo gigante demais para ser só "todo mundo",
+nenhum tão pequeno que vire ruído).</p>
+
+<h2>6. O resultado: 5 grupos de clientes</h2>
+<p>Rodando o método com os 7.176 clientes ativos, chegamos nestes 5 grupos:</p>
+<p class="img-caption">Quantos clientes caem em cada grupo</p>
+<img class="fig" src="../4.apresentacao/fig2_distribuicao_clusters.png" alt="Distribuição dos clusters">
+
+<h3>Base Padrão — 4.071 clientes (56,7%)</h3>
+<p>O grosso da carteira. Compra pouco volume, poucos produtos diferentes, raramente. Preço e margem
+dentro da média geral. É o perfil "cliente comum" — sem nenhum traço que se destaque.</p>
+
+<h3>Estratégicos (Grande Volume) — 129 clientes (1,8%)</h3>
+<p>O menor grupo, mas o mais valioso em volume: compram quase 40× mais que a Base Padrão, de muito mais
+produtos diferentes, com frequência alta. O preço que pagam está em linha com a média — não são
+"clientes premium" no preço, são grandes e engajados. Candidatos naturais a atendimento dedicado.</p>
+
+<h3>Volume Médio Diversificado — 525 clientes (7,3%)</h3>
+<p>Mesmo perfil dos Estratégicos, em escala menor — uma espécie de "estratégico em formação". Bons
+candidatos a acompanhamento próximo para crescer de patamar.</p>
+
+<h3>Nicho Premium (Alto Valor Unitário) — 883 clientes (12,3%)</h3>
+<p>O único grupo que não se destaca pelo volume, e sim pelo <b>preço</b>: paga, em média, cerca de 40%
+acima dos demais grupos por unidade de volume. Em compensação, compra pouco, poucos produtos e raramente.
+Vale a pena entender <i>por que</i> esse grupo paga mais (produto específico? urgência? falta de
+alternativa logística?) antes de qualquer decisão de preço sobre ele.</p>
+
+<h3>Volume Médio Padrão — 1.568 clientes (21,9%)</h3>
+<p>Perfil intermediário em quase tudo — nem tão pequeno quanto a Base Padrão, nem tão grande quanto os
+Estratégicos. A "classe média" da segmentação.</p>
+
+<div class="warn-box"><b class="title">Importante</b>
+Os nomes acima (Base Padrão, Estratégicos, etc.) são <b>sugestões</b> criadas a partir dos números — não
+são uma decisão de negócio validada. Antes de virarem rótulo oficial usado no dia a dia, precisam de
+checagem com o time comercial, que conhece esses clientes na prática.</div>
+
+<h2>7. Cruzando com família de produto e frequência de compra</h2>
+<p>Os 5 grupos acima dizem <b>quem se parece com quem</b> de forma geral. Mas, para virar uma referência
+prática de preço, cruzamos cada grupo com duas informações a mais: qual <b>família de produto</b> o
+cliente compra mais, e com que <b>frequência</b>. Isso porque dois clientes do mesmo grupo podem comprar
+produtos bem diferentes — e isso importa para decisões de preço e estoque.</p>
+
+<p class="img-caption">As famílias de produto mais vendidas (8 famílias já cobrem quase 3/4 do volume)</p>
+<img class="fig" src="../4.apresentacao/fig7_top_familias.png" alt="Top famílias por volume">
+
+<p class="img-caption">Como a frequência de compra se distribui dentro de cada grupo</p>
+<img class="fig" src="../4.apresentacao/fig8_frequencia_por_cluster.png" alt="Frequência por cluster">
+
+<p>Cruzando os 5 grupos com as famílias de produto, chegamos a <b>45 combinações</b> (grupo × família)
+que servem de base para pensar preço de forma mais fina do que "um preço para cada grupo inteiro".</p>
+
+<p class="img-caption">Margem % em cada combinação de grupo × família</p>
+<img class="fig" src="../4.apresentacao/fig6_heatmap_margem.png" alt="Heatmap de margem">
+
+<p class="img-caption">Preço médio pago (por m³) em cada combinação de grupo × família</p>
+<img class="fig" src="../4.apresentacao/fig10_heatmap_preco.png" alt="Heatmap de preço">
+
+<p class="img-caption">De onde vem a receita de cada grupo, por família de produto</p>
+<img class="fig" src="../4.apresentacao/fig11_receita_cluster_familia.png" alt="Receita por família dentro de cada cluster">
+
+<h2>8. Onde focar primeiro</h2>
+<p>Das 45 combinações grupo × família, a receita não se distribui igualmente — poucas concentram a maior
+parte. Isso ajuda a decidir por onde começar, em vez de tentar mexer nas 45 de uma vez.</p>
+<p class="img-caption">Poucos segmentos já respondem pela maior parte da receita total</p>
+<img class="fig" src="../4.apresentacao/fig5_pareto_segmentos.png" alt="Concentração de receita por segmento">
+<div class="callout"><b class="title">Leitura prática</b>
+16 das 45 combinações já cobrem 80% da receita total. Faz sentido validar e agir sobre essas primeiro,
+em vez de tentar cobrir as 45 de uma vez.</div>
+
+<h2>9. Conclusões e próximos passos</h2>
+<ul>
+<li><b>Valide os grupos com quem conhece os clientes.</b> Os nomes e perfis vieram só dos números —
+o time comercial deve confirmar se fazem sentido na prática antes de virarem política oficial.</li>
+<li><b>Use os grupos para pensar preço de forma diferenciada</b>, começando pelas combinações que já
+concentram a maior parte da receita (seção 8).</li>
+<li><b>Investigue o Nicho Premium antes de mexer no preço dele.</b> É o único grupo definido por pagar
+mais — vale entender a causa antes de qualquer ajuste.</li>
+<li><b>Isso não é definitivo.</b> Comportamento de compra muda com o tempo; recomendamos reprocessar essa
+segmentação a cada trimestre e comparar se os grupos continuam fazendo sentido.</li>
+<li><b>Isso é um ponto de partida, não substitui o julgamento comercial.</b> Os dados mostram padrões;
+cabe ao time decidir o que fazer com eles.</li>
+</ul>
+
+<h2>Perguntas frequentes</h2>
+<div class="faq-item"><div class="q">Por que o preço entrou na conta, se o objetivo é decidir o preço?</div>
+<p>Não usamos o preço para <i>prever</i> nada — usamos para <i>descrever</i> o comportamento atual dos
+clientes, do mesmo jeito que olhamos volume ou frequência. Sem olhar o preço, o grupo Nicho Premium
+(que hoje paga bem mais que os demais) ficaria escondido dentro do grupo Base Padrão, porque nas outras
+5 características eles são parecidos. É o preço que revela esse grupo.</p></div>
+
+<div class="faq-item"><div class="q">O "preço médio pago" é o mesmo que "ticket médio"?</div>
+<p>Não. Ticket médio seria receita dividida pelo número de compras (quanto vale uma compra típica). O que
+usamos aqui é receita dividida por volume — quanto custa, em média, uma unidade de volume para aquele
+cliente, misturando todos os produtos que ele leva.</p></div>
+
+<div class="faq-item"><div class="q">Esses 5 grupos são definitivos?</div>
+<p>Não. São o resultado de uma primeira rodada de análise, feita com dados até setembro de 2026.
+Comportamento de cliente muda — por isso a recomendação é reprocessar essa segmentação periodicamente
+(sugestão: a cada trimestre) e comparar se os grupos continuam parecidos.</p></div>
+
+<div class="faq-item"><div class="q">Por que 5 grupos, e não 3 ou 10?</div>
+<p>Testamos diferentes quantidades. Com menos grupos, perdíamos diferenças importantes (ex: o Nicho
+Premium ficaria escondido dentro de um grupo maior). Com mais grupos, começávamos a criar divisões
+artificiais, sem diferença prática real entre elas. Cinco foi o número que equilibrou melhor as duas
+coisas.</p></div>
+
+<footer class="foot">
+Este documento resume, em linguagem simples, o processo descrito em detalhe técnico no
+<code>relatório técnico completo</code> (mesma pasta) — que inclui a metodologia estatística, o código
+usado e as métricas de qualidade do modelo, para quem quiser se aprofundar. Os dados usados vão até
+setembro de 2026. Gerado a partir da análise de clusterização K-Means da base Sell In — Lubrificantes.
+</footer>
+
+</div>
+</body>
+</html>
