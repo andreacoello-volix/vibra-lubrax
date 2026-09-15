@@ -56,16 +56,16 @@ footer.foot code { background:var(--panel2); padding:1px 6px; border-radius:4px;
 <div class="executive-summary">
   <p class="eyebrow">Guia para o time comercial · Setembro de 2026</p>
   <h1>Como agrupamos os clientes da Vibra Lubrax — e por quê</h1>
-  <p class="lead">Este documento explica, sem jargão técnico, o que fizemos para dividir os 7.176 clientes
-  ativos em 5 grupos com perfis de compra diferentes — e como isso pode apoiar decisões de preço,
+  <p class="lead">Este documento explica, sem jargão técnico, o que fizemos para dividir os 7.050 clientes
+  ativos em 4 grupos com perfis de compra diferentes — e como isso pode apoiar decisões de preço,
   atendimento e promoção. Não é preciso saber nada de estatística ou programação para acompanhar.</p>
 </div>
 
 <h2>1. Por que agrupar clientes?</h2>
 <p>Hoje, é fácil pensar nos clientes da Vibra Lubrax como uma massa única — mais de 7 mil empresas
 diferentes comprando lubrificante. Mas eles não compram do mesmo jeito: alguns compram um volume enorme
-todo mês, outros compram pouco e raramente; alguns pagam mais por unidade, outros menos; alguns devolvem
-produto com frequência, outros nunca.</p>
+todo mês, outros compram pouco e raramente; alguns pagam mais por unidade, outros menos; alguns compraram
+recentemente, outros não aparecem há mais de um ano.</p>
 <p>Se conseguirmos identificar <b>grupos de clientes que se parecem entre si</b>, fica mais fácil pensar em
 políticas diferentes para cada grupo — preço, prazo de entrega, tipo de promoção — em vez de tratar
 todo mundo com a mesma régua. É esse o objetivo de todo o trabalho descrito aqui.</p>
@@ -86,12 +86,12 @@ sem ninguém dizer de antemão quais grupos deveriam existir.</p>
 <h2>3. Como o método usado (K-Means) funciona</h2>
 <p>Existem várias formas de fazer clusterização. Usamos uma das mais consolidadas e fáceis de explicar,
 chamada <b>K-Means</b>. O nome vem de "K médias": você escolhe quantos grupos quer (o "K" — no nosso caso,
-5) e o algoritmo encontra a média de cada grupo, repetidamente, até estabilizar.</p>
+4) e o algoritmo encontra a média de cada grupo, repetidamente, até estabilizar.</p>
 <ol class="steps">
-  <li><b>Escolhe-se quantos grupos formar.</b> Decidimos K = 5 (o porquê está na seção 5).</li>
-  <li><b>O algoritmo "chuta" 5 clientes médios imaginários</b> — um representante inicial para cada grupo.</li>
+  <li><b>Escolhe-se quantos grupos formar.</b> Decidimos K = 4 (o porquê está na seção 5).</li>
+  <li><b>O algoritmo "chuta" 4 clientes médios imaginários</b> — um representante inicial para cada grupo.</li>
   <li><b>Cada cliente real é colocado no grupo do representante mais parecido com ele</b> (comparando
-  volume, preço, margem, frequência, devolução e diversidade de produtos, todos ao mesmo tempo).</li>
+  volume, preço, margem, recência e diversidade de produtos, todos ao mesmo tempo).</li>
   <li><b>O algoritmo recalcula o representante de cada grupo</b>, agora como a média de verdade de quem
   entrou naquele grupo.</li>
   <li><b>Repete os passos 3 e 4</b> várias vezes, até os clientes pararem de trocar de grupo — nesse ponto,
@@ -99,17 +99,17 @@ chamada <b>K-Means</b>. O nome vem de "K médias": você escolhe quantos grupos 
 </ol>
 <div class="analogy">
   <span class="tag">Para visualizar</span>
-  É parecido com organizar um evento em 5 mesas por afinidade: no começo você escolhe 5 pessoas
+  É parecido com organizar um evento em 4 mesas por afinidade: no começo você escolhe 4 pessoas
   aleatórias como "representante" de cada mesa. Todo mundo senta na mesa do representante mais parecido
   com ele. Depois, você troca cada representante pela "pessoa média" de quem sentou naquela mesa, e pede
   para todo mundo reavaliar se ainda está na mesa certa. Repete até ninguém mais trocar de mesa.
 </div>
 
 <h2>4. O que olhamos em cada cliente</h2>
-<p>Para comparar os clientes, resumimos o comportamento de compra de cada um em <b>6 números</b>. Testamos
-outras métricas também, mas descartamos as que só repetiam a mesma informação de outra forma (por
-exemplo, "receita total" e "volume total" praticamente contam a mesma história de tamanho do cliente —
-usar as duas seria contar o mesmo ponto duas vezes).</p>
+<p>Para comparar os clientes, resumimos o comportamento de compra de cada um em <b>5 números</b>. Testamos
+outras métricas também — inclusive frequência de compra e taxa de devolução, que estavam na primeira
+versão desta análise — mas descartamos as que ou tinham problema de qualidade de dado, ou só repetiam a
+mesma informação de outra forma, ou não melhoravam a divisão dos grupos quando testadas.</p>
 <table>
 <thead><tr><th>O que mede</th><th>Explicação simples</th></tr></thead>
 <tbody>
@@ -118,93 +118,279 @@ usar as duas seria contar o mesmo ponto duas vezes).</p>
 todos os produtos que ele leva. Não é "ticket médio" (não é sobre o valor de uma compra isolada), é sobre
 quanto custa, na média, uma unidade de volume para aquele cliente</td></tr>
 <tr><td><b>Margem</b></td><td>Quão lucrativa é a relação com aquele cliente, em % da receita</td></tr>
-<tr><td><b>Frequência</b></td><td>Quantas vezes por mês, em média, o cliente compra</td></tr>
-<tr><td><b>Devolução</b></td><td>Com que frequência os pedidos desse cliente voltam como devolução</td></tr>
 <tr><td><b>Diversidade de produtos</b></td><td>Quantos produtos diferentes o cliente compra</td></tr>
+<tr><td><b>Recência</b></td><td>Há quantos dias o cliente não faz uma compra</td></tr>
 </tbody>
 </table>
+<div class="warn-box"><b class="title">Por que a família AV não entra aqui</b>
+A pedido da Vibra, os produtos da família <b>AV</b> foram tratados à parte e não entram nesta análise —
+nem na conta de volume/preço/margem, nem nos grupos abaixo. Isso tira ~24% do volume total da base e
+175 clientes que só compravam AV (sem mais nenhuma compra elegível para entrar no modelo).</div>
 
 <h2>5. O caminho até o resultado final</h2>
-<p>Não acertamos de primeira. Testamos 5 configurações diferentes antes de chegar no resultado final —
+<p>Não acertamos de primeira. Passamos por várias rodadas de teste antes de chegar no resultado final —
 vale contar essa história porque a primeira tentativa é um bom alerta sobre como números "bonitos" podem
-enganar.</p>
+enganar, e porque cada variável só entrou (ou saiu) da conta depois de testada com evidência, não por
+achismo.</p>
 <p>A primeira tentativa usou uma métrica estatística para escolher automaticamente quantos grupos formar,
 e o resultado pareceu ótimo nos números. Só que, ao olhar de perto, essa configuração tinha simplesmente
 separado uma dúzia de clientes com valores muito fora do padrão — e jogado <b>todo o resto da base (mais
-de 99% dos clientes) num único grupo</b>. Estatisticamente "perfeito", mas inútil para o negócio: não
-ajuda a diferenciar política de preço para 7 mil clientes.</p>
-<p>A partir daí, fomos ajustando: primeiro tratamos esses valores extremos separadamente (sem descartar
-os clientes, só evitando que eles distorçam o resultado), depois testamos diferentes quantidades de
-grupos, e por fim adicionamos a variável de diversidade de produtos, que melhorou a qualidade da divisão.
-O resultado final — 5 grupos — foi o que equilibrou melhor duas coisas: ser estatisticamente consistente
-<i>e</i> gerar grupos de tamanho útil para o negócio (nenhum grupo gigante demais para ser só "todo mundo",
-nenhum tão pequeno que vire ruído).</p>
+de 99% dos clientes) num único grupo</b>. Estatisticamente "perfeito", mas inútil para o negócio.</p>
+<p>A partir daí, fomos ajustando: tratamos os valores extremos separadamente, testamos diferentes
+quantidades de grupos, adicionamos e testamos variáveis novas (recência de compra, por exemplo, entrou;
+intensidade de desconto e concentração num único tipo de produto foram testadas e descartadas, porque
+pioravam a qualidade da divisão sem trazer nada em troca). Também removemos a frequência de compra da
+conta — descobrimos que a forma como ela era calculada tinha um problema: alguns pedidos são faturados em
+várias remessas, o que inflava artificialmente a contagem de compras de certos clientes.</p>
+<p>O resultado final — 4 grupos — foi o que equilibrou melhor duas coisas: ser estatisticamente
+consistente <i>e</i> revelar um grupo de clientes que faz sentido de negócio investigar (grupo Especial,
+seção 6) — um grupo que só aparece quando se usa 4 grupos em vez de 3.</p>
 
-<h2>6. O resultado: 5 grupos de clientes</h2>
-<p>Rodando o método com os 7.176 clientes ativos, chegamos nestes 5 grupos:</p>
+<h2>6. O resultado: 4 grupos de clientes</h2>
+<p>Rodando o método com os 7.050 clientes ativos (sem a família AV), chegamos nestes 4 grupos:</p>
 <p class="img-caption">Quantos clientes caem em cada grupo</p>
-<img class="fig" src="../4.apresentacao/fig2_distribuicao_clusters.png" alt="Distribuição dos clusters">
+<img class="fig" src="../2.segmentacao_hibrida/distribuicao_clusters.png" alt="Distribuição dos clusters">
 
-<h3>Base Padrão — 4.071 clientes (56,7%)</h3>
-<p>O grosso da carteira. Compra pouco volume, poucos produtos diferentes, raramente. Preço e margem
-dentro da média geral. É o perfil "cliente comum" — sem nenhum traço que se destaque.</p>
+<h3>Pequeno — 4.656 clientes (66,0%)</h3>
+<p>O grosso da carteira. Compra pouco volume, poucos produtos diferentes, e há muito tempo não compra
+(quase 14 meses, em média). Preço e margem dentro da média geral. É o perfil "cliente comum" — sem
+nenhum traço que se destaque, além de estar meio esquecido.</p>
 
-<h3>Estratégicos (Grande Volume) — 129 clientes (1,8%)</h3>
-<p>O menor grupo, mas o mais valioso em volume: compram quase 40× mais que a Base Padrão, de muito mais
-produtos diferentes, com frequência alta. O preço que pagam está em linha com a média — não são
-"clientes premium" no preço, são grandes e engajados. Candidatos naturais a atendimento dedicado.</p>
+<h3>Grande — 265 clientes (3,8%)</h3>
+<p>O menor grupo, mas o mais valioso em volume: compram bem mais que o grupo Pequeno, de muito mais
+produtos diferentes, e compraram recentemente (pouco mais de 3 meses atrás, em média). O preço que
+pagam está em linha com a média — não são "clientes premium" no preço, são grandes e engajados.
+Candidatos naturais a atendimento dedicado.</p>
 
-<h3>Volume Médio Diversificado — 525 clientes (7,3%)</h3>
-<p>Mesmo perfil dos Estratégicos, em escala menor — uma espécie de "estratégico em formação". Bons
+<h3>Médio — 1.131 clientes (16,0%)</h3>
+<p>Mesmo perfil do grupo Grande, em escala menor — uma espécie de "grande em formação". Bons
 candidatos a acompanhamento próximo para crescer de patamar.</p>
 
-<h3>Nicho Premium (Alto Valor Unitário) — 883 clientes (12,3%)</h3>
-<p>O único grupo que não se destaca pelo volume, e sim pelo <b>preço</b>: paga, em média, cerca de 40%
-acima dos demais grupos por unidade de volume. Em compensação, compra pouco, poucos produtos e raramente.
-Vale a pena entender <i>por que</i> esse grupo paga mais (produto específico? urgência? falta de
-alternativa logística?) antes de qualquer decisão de preço sobre ele.</p>
-
-<h3>Volume Médio Padrão — 1.568 clientes (21,9%)</h3>
-<p>Perfil intermediário em quase tudo — nem tão pequeno quanto a Base Padrão, nem tão grande quanto os
-Estratégicos. A "classe média" da segmentação.</p>
+<h3>Especial — 998 clientes (14,2%)</h3>
+<p>Este é o grupo que a análise revelou, e o mais acionável dos quatro. Compram tão pouco quanto o
+grupo Pequeno — mas pagam, em média, <b>cerca de 50% a mais por m³</b>, e têm a <b>menor margem de
+todos os grupos</b>. Ou seja: são clientes pequenos que não estão recebendo os descontos que o resto da
+base pequena recebe. Compraram um pouco mais recentemente que o grupo Pequeno (cerca de 8 meses atrás,
+contra quase 14). Vale a pena entender <i>por que</i> esse grupo paga mais (produto específico? canal?
+região? falta de negociação?) antes de qualquer decisão de preço sobre ele.</p>
 
 <div class="warn-box"><b class="title">Importante</b>
-Os nomes acima (Base Padrão, Estratégicos, etc.) são <b>sugestões</b> criadas a partir dos números — não
+Os nomes acima (Pequeno, Grande, Médio, Especial) são <b>sugestões</b> criadas a partir dos números — não
 são uma decisão de negócio validada. Antes de virarem rótulo oficial usado no dia a dia, precisam de
 checagem com o time comercial, que conhece esses clientes na prática.</div>
 
-<h2>7. Cruzando com família de produto e frequência de compra</h2>
-<p>Os 5 grupos acima dizem <b>quem se parece com quem</b> de forma geral. Mas, para virar uma referência
-prática de preço, cruzamos cada grupo com duas informações a mais: qual <b>família de produto</b> o
-cliente compra mais, e com que <b>frequência</b>. Isso porque dois clientes do mesmo grupo podem comprar
-produtos bem diferentes — e isso importa para decisões de preço e estoque.</p>
+<h2>7. Cruzando com família de produto, frequência de compra e setor (CNAE)</h2>
+<p>Os 4 grupos acima dizem <b>quem se parece com quem</b> de forma geral. Mas, para virar uma referência
+prática de preço, cruzamos cada grupo com informações a mais: qual <b>família de produto</b> o
+cliente compra mais, com que <b>frequência</b>, e qual o <b>setor de atividade</b> dele. Isso porque
+dois clientes do mesmo grupo podem comprar produtos bem diferentes, ou atuar em ramos bem diferentes —
+e isso importa para decisões de preço e estoque.</p>
 
-<p class="img-caption">As famílias de produto mais vendidas (8 famílias já cobrem quase 3/4 do volume)</p>
-<img class="fig" src="../4.apresentacao/fig7_top_familias.png" alt="Top famílias por volume">
+<p>Para setor, trocamos a "Segmentação B2B" que já existia (categorias amplas, como "OUTROS" e
+"OUTRAS INDÚSTRIAS", que juntas escondiam quase 1.500 clientes sem discriminar nada de útil) por
+CNAE — a classificação oficial de atividade econômica da Receita Federal, cruzada pelo CNPJ de cada
+cliente. Cobertura: 96,8% dos clientes (o restante é pessoa física, que não tem CNAE).</p>
 
-<p class="img-caption">Como a frequência de compra se distribui dentro de cada grupo</p>
-<img class="fig" src="../4.apresentacao/fig8_frequencia_por_cluster.png" alt="Frequência por cluster">
+<p class="img-caption">As famílias de produto mais vendidas, sem AV (10 famílias já cobrem quase 70% do volume)</p>
+<img class="fig" src="../2.segmentacao_hibrida/top_familias.png" alt="Top famílias por volume">
 
-<p>Cruzando os 5 grupos com as famílias de produto, chegamos a <b>45 combinações</b> (grupo × família)
-que servem de base para pensar preço de forma mais fina do que "um preço para cada grupo inteiro".</p>
+<p class="img-caption">Top 10 famílias: quanto pesam no volume e na receita de cada grupo</p>
+<img class="fig" src="../2.segmentacao_hibrida/top10_familias_volume_receita_cluster.png" alt="Top 10 famílias volume e receita por cluster">
+<div class="callout"><b class="title">O mix do Especial já é um pouco mais disperso</b>
+TOP TURBO (a família líder) cai para ~15% do volume e ~12% da receita do Especial, contra ~30% nos
+outros três grupos — e a cobertura do top 10 cai para <b>~52% do volume e ~45% da receita</b>,
+contra ~65%–73% nos outros três grupos. Quase metade do volume/receita do Especial vem de fora das
+10 famílias mais vendidas da base. Mas isso sozinho não explica a diferença de preço/margem: o
+achado de margem unitária (mais adiante) mostra que a queda de margem acontece em toda família,
+dispersa ou não.</div>
+
+<p class="img-caption">Top 10 famílias — só dentro do cluster Especial (o mesmo top 10 acima não é igual para o Especial)</p>
+<img class="fig" src="../2.segmentacao_hibrida/top10_familias_especial.png" alt="Top 10 famílias dentro do cluster Especial">
+<div class="callout"><b class="title">O Especial não compra só menos concentrado — compra diferente</b>
+4 das 10 famílias do top do Especial (TOP TURBO AVANTE, LITHPLUS EP, TRM 5 PLUS, LITH EP) não
+aparecem no top 10 da base toda. Em compensação, 4 famílias do top 10 geral (FLUIDO PARA RADIADOR,
+HYDRA, UNITRACTOR, UTILE) nem entram no top 10 do Especial. Olhando o próprio Especial, esse top 10
+cobre 60,4% do volume e 56,8% da receita — mais que os 52,0%/44,8% do top 10 geral aplicado ao
+Especial, porque agora são as 10 famílias que o Especial de fato mais compra.</div>
+
+<p class="img-caption">Como a frequência de compra (corrigida) se distribui dentro de cada grupo</p>
+<img class="fig" src="../2.segmentacao_hibrida/frequencia_por_cluster.png" alt="Frequência por cluster">
+
+<p class="img-caption">Nível de margem (Baixa / Média / Alta) dentro de cada grupo</p>
+<img class="fig" src="../2.segmentacao_hibrida/nivel_margem_por_cluster.png" alt="Nível de margem por cluster" style="max-width:640px; margin-inline:auto;">
+<div class="callout"><b class="title">A margem apertada do Especial não é só a média — é a maioria dos clientes</b>
+Classificando a margem de cada cliente em Baixa (abaixo de 13%), Média (13% a 18%) ou Alta (18% ou mais),
+quase metade do grupo <b>Especial (48,5%)</b> cai na faixa Baixa — contra 29% a 35% nos outros três grupos —
+e só 23,4% chega na faixa Alta, a menor proporção dos quatro. Ou seja: não é um punhado de casos extremos
+puxando a média para baixo, é a maioria dos clientes desse grupo mesmo.</div>
+
+<div class="callout"><b class="title">A pista de frete se confirma aqui também</b>
+Dentro do Especial, clientes de Mato Grosso/MS estão mais concentrados na faixa de margem Baixa
+(57,7% deles, contra 46,8% do resto do grupo) — e o frete médio já é o mais alto justamente na
+faixa Baixa (R$ 655/m³, contra R$ 558/m³ na faixa Alta). Reforça que vale investigar o custo
+logístico desses clientes específicos antes de tratar isso como desconto comercial mal aplicado.</div>
+
+<p class="img-caption">Margem unitária por produto — top 10 específico do cluster Especial</p>
+<img class="fig" src="../2.segmentacao_hibrida/margem_unitaria_top10_especial.png" alt="Margem unitária top 10 Especial" style="max-width:640px; margin-inline:auto;">
+<div class="callout"><b class="title">Preço mais alto não é margem melhor</b>
+As duas famílias mais caras do top 10 do Especial — TOP TURBO AVANTE e LITHPLUS EP — estão na faixa
+de margem Baixa (11%–12%), não na Alta. Já GEAR e HYDRA XP, com preço no meio da tabela, são as
+únicas com margem Alta (19,5%–20,5%). Das 4 famílias exclusivas do Especial, 3 estão na faixa
+Baixa — por quê? Investigamos a seguir.</div>
+
+<p class="img-caption">Margem vs. custo, por produto — top 10 específico do cluster Especial</p>
+<img class="fig" src="../2.segmentacao_hibrida/bolha_margem_custo_especial.png" alt="Margem vs custo Especial">
+
+<p class="img-caption">Frete, dentro do Especial: quem compra produto de margem Baixa vs. resto do top 10</p>
+<img class="fig" src="../2.segmentacao_hibrida/frete_produtos_margem_baixa.png" alt="Frete produtos margem Baixa" style="max-width:520px; margin-inline:auto;">
+<div class="callout"><b class="title">Não é frete</b>
+O frete médio de quem compra os produtos de margem Baixa (R$ 559/m³, n=440) é, na verdade, <b>menor</b>
+que o de quem compra os outros produtos do top 10 (R$ 678/m³, n=411) — o frete não explica a margem
+apertada desses 4 produtos especificamente. O achado de frete/UF segue válido no nível agregado do
+cluster, mas não é a causa da margem baixa desses produtos em particular.</div>
+
+<p class="img-caption">Produtos de margem Baixa no Especial: nº de clientes por UF</p>
+<img class="fig" src="../2.segmentacao_hibrida/clientes_uf_produtos_margem_baixa.png" alt="Clientes por UF, produtos margem Baixa">
+<p>440 clientes (44,1% do Especial) compram pelo menos um desses 4 produtos, espalhados pelas mesmas
+UFs que já vimos antes (SP, MG, CE e MT concentram a maior parte) — não é um problema geográfico
+isolado.</p>
+
+<p class="img-caption">Margem % dos 4 produtos de margem Baixa, em cada grupo</p>
+<table>
+<thead><tr><th>Produto</th><th>Pequeno</th><th>Grande</th><th>Especial</th><th>Médio</th></tr></thead>
+<tbody>
+<tr><td>LITHPLUS EP</td><td>10,0%</td><td>8,6%</td><td><b>11,0%</b></td><td>9,4%</td></tr>
+<tr><td>TRM 5 PLUS</td><td>10,1%</td><td>9,9%</td><td><b>11,1%</b></td><td>10,9%</td></tr>
+<tr><td>TOP TURBO AVANTE</td><td>9,7%</td><td>12,9%</td><td>12,0%</td><td>11,3%</td></tr>
+<tr><td>TRM 5</td><td>14,4%</td><td>15,7%</td><td>12,9%</td><td>15,4%</td></tr>
+</tbody>
+</table>
+<div class="callout"><b class="title">Não é (só) o Especial</b>
+Esses 4 produtos têm margem apertada em <b>todos os 4 grupos</b> (8,6% a 15,7%) — não é uma questão
+de logística, região ou desconto mal aplicado no Especial. Em 2 dos 4 produtos (LITHPLUS EP e TRM 5
+PLUS) a margem do Especial é a <b>melhor</b> entre os 4 grupos. Só TRM 5 é consistentemente pior no
+Especial. A causa mais provável é o <b>custo de aquisição do próprio produto</b> (as formulações
+"PLUS"/"AVANTE" sugerem insumos mais caros), não algo específico do Especial. O que arrasta a média
+de margem do Especial para baixo é o <b>mix</b>: o grupo compra proporcionalmente mais desses
+produtos inerentemente de margem apertada do que os outros três grupos — não porque recebe um preço
+ou desconto piores nesses produtos especificamente.</div>
+
+<p class="img-caption">CNAE por divisão — visão simplificada (as 10 divisões mais comuns na base, por grupo, % de clientes).
+Divisão agrupa subclasses parecidas: "transporte rodoviário de carga", "...de passageiros" e "...de produtos perigosos"
+viram uma só linha, "Transporte terrestre".</p>
+<img class="fig" src="../2.segmentacao_hibrida/cnae_por_cluster.png" alt="CNAE por divisão, por cluster">
+
+<div class="callout"><b class="title">Achado do CNAE: quem é realmente agro</b>
+Usando CNAE, isolamos quem é agricultura/pecuária/floresta/pesca de verdade (e não só quem estava
+tagueado "AGRONEGOCIO", categoria que misturava agricultura com transporte e outros ramos ligados ao
+agro): <b>4,2% da base</b> (cerca de 295 clientes), espalhados de forma parecida entre os 4 grupos —
+não concentrados em nenhum grupo específico. Esse recorte é o próximo passo natural para uma análise
+de <b>safra</b>: cada cultura (soja, café, laranja etc.) tem uma janela de colheita diferente, então
+faz mais sentido testar sazonalidade nesse recorte específico do que tentar aplicar sazonalidade para
+a base toda (o que já testamos antes e não funcionou, por falta de dado suficiente para a maioria dos
+clientes, que não são agro).</div>
+
+<p class="img-caption">% de clientes AGRO por grupo</p>
+<img class="fig" src="../2.segmentacao_hibrida/agro_por_cluster.png" alt="Percentual de clientes AGRO por cluster" style="max-width:480px; margin-inline:auto;">
+
+<p class="img-caption">O que os clientes AGRO compram, dentro de cada grupo (% do volume AGRO do grupo)</p>
+<img class="fig" src="../2.segmentacao_hibrida/produtos_agro_por_cluster.png" alt="Família de produto comprada pelos clientes AGRO, por cluster">
+<div class="callout"><b class="title">Nem todo AGRO compra igual</b>
+No grupo Especial, os clientes AGRO compram desproporcionalmente mais UNITRACTOR (36% do volume AGRO
+do grupo, dentro do top 10) e bem menos TOP TURBO (17%, contra 43%–45% nos outros três grupos). No
+Grande, HYDRA XP se destaca (26%). O top 10 cobre entre 68% e 80% do volume AGRO de cada grupo.</div>
+
+<p>Cruzando os 4 grupos com as 10 famílias de maior volume (sem bucket "Outras" — mesma lógica das
+visões de "top 10" acima, aceitando cobertura parcial), chegamos a <b>40 combinações viáveis</b>
+(grupo × família, todas com 10 clientes ou mais) que servem de base para pensar preço de forma mais
+fina do que "um preço para cada grupo inteiro".</p>
 
 <p class="img-caption">Margem % em cada combinação de grupo × família</p>
-<img class="fig" src="../4.apresentacao/fig6_heatmap_margem.png" alt="Heatmap de margem">
+<img class="fig" src="../2.segmentacao_hibrida/heatmap_margem_cluster_familia.png" alt="Heatmap de margem">
 
-<p class="img-caption">Preço médio pago (por m³) em cada combinação de grupo × família</p>
-<img class="fig" src="../4.apresentacao/fig10_heatmap_preco.png" alt="Heatmap de preço">
+<p class="img-caption">Preço médio pago (R$/m³) por grupo, nas 10 famílias mais vendidas da base</p>
+<img class="fig" src="../2.segmentacao_hibrida/heatmap_preco_cluster_familia.png" alt="Heatmap de preço">
+<div class="callout"><b class="title">O grupo Especial paga mais em toda família, não só num produto</b>
+No heatmap acima, a linha do grupo Especial é a mais escura em <b>todas as 10 famílias, sem exceção</b>
+— chegando a R$ 18.057/m³ em UTILE, quase 50% mais caro que a média dos outros três grupos nessa
+mesma família. Isso reforça que o achado não vem de um produto específico: é um padrão de preço
+consistente desse grupo.</div>
 
-<p class="img-caption">De onde vem a receita de cada grupo, por família de produto</p>
-<img class="fig" src="../4.apresentacao/fig11_receita_cluster_familia.png" alt="Receita por família dentro de cada cluster">
+<p class="img-caption">Preço médio pago — só o top 10 específico do cluster Especial</p>
+<img class="fig" src="../2.segmentacao_hibrida/preco_top10_familias_especial.png" alt="Preço ponderado do top 10 de famílias do cluster Especial">
+<div class="callout"><b class="title">As famílias exclusivas do Especial são também as mais caras</b>
+As 2 famílias exclusivas do Especial com maior volume são também as mais caras de toda a lista —
+TOP TURBO AVANTE (R$ 22.903/m³) e LITHPLUS EP (R$ 22.436/m³), acima até do pico visto no top 10
+geral (R$ 18.057/m³ em UTILE). O mix específico do Especial não é só diferente — é mais caro ainda.</div>
+
+<p class="img-caption">Preço por UF — top 10 específico do cluster Especial</p>
+<img class="fig" src="../2.segmentacao_hibrida/preco_uf_top10_especial.png" alt="Preço por UF, top 10 Especial">
+<div class="callout"><b class="title">Mato Grosso é a UF mais cara em quase todo produto do Especial</b>
+Chegando a R$ 29.761/m³ em TOP TURBO AVANTE e R$ 26.869/m³ em LITHPLUS EP — bem acima do que se
+paga nas mesmas famílias em São Paulo ou Minas Gerais. O achado de frete/UF não é só um efeito de
+composição de cluster — ele aparece produto a produto.</div>
+
+<p class="img-caption">Preço por produto x UF, comparando os 4 grupos (mesma escala de cor)</p>
+<img class="fig" src="../2.segmentacao_hibrida/preco_uf_4clusters.png" alt="Preço por UF, 4 clusters">
+<div class="callout"><b class="title">O Especial paga mais em qualquer corte</b>
+Na mesma escala de cor, o painel do Especial é visivelmente mais escuro (mais caro) que Pequeno,
+Grande e Médio em praticamente toda combinação produto × UF — não é efeito de uma UF ou produto
+isolado, é o grupo inteiro que paga mais.</div>
+
+<p class="img-caption">Maior divisão de CNAE por receita em cada grupo (não só por nº de clientes)</p>
+<table>
+<thead><tr><th>Grupo</th><th>Receita total</th><th>Maior divisão por receita</th><th>% da receita do grupo</th></tr></thead>
+<tbody>
+<tr><td>Pequeno</td><td>R$ 198,1 mi</td><td>Transporte terrestre</td><td>39,2%</td></tr>
+<tr><td>Grande</td><td>R$ 288,3 mi</td><td>Transporte terrestre</td><td>41,7%</td></tr>
+<tr><td>Especial</td><td>R$ 52,4 mi</td><td>Transporte terrestre</td><td>48,8%</td></tr>
+<tr><td>Médio</td><td>R$ 396,9 mi</td><td>Transporte terrestre</td><td>40,5%</td></tr>
+</tbody>
+</table>
+<p>Transporte terrestre (a divisão que reúne carga, passageiros e produtos perigosos) é a maior fonte de
+receita nos <b>4 grupos</b> — no Especial, concentra quase metade de toda a receita do grupo, a maior
+concentração entre os quatro.</p>
+
+<p class="img-caption">% da receita de cada grupo vinda de "Transporte terrestre"</p>
+<img class="fig" src="../2.segmentacao_hibrida/receita_transporte_por_cluster.png" alt="Receita de Transporte terrestre por cluster" style="max-width:480px; margin-inline:auto;">
+
+<p class="img-caption">De onde são os clientes de cada grupo (top 10 UFs)</p>
+<img class="fig" src="../2.segmentacao_hibrida/uf_por_cluster.png" alt="UF do cliente por cluster">
+<div class="callout"><b class="title">Achado: o Especial tem mais gente do Centro-Oeste que o esperado</b>
+<b>Mato Grosso é 4,4x mais representado no grupo Especial</b> (11,2% dos clientes do grupo, contra
+2,6% na base toda) — e Mato Grosso do Sul, 2,7x mais (4,4% contra 1,6%). Os dois estados ficam longe
+das refinarias e centros de distribuição do litoral. Isso é uma pista concreta: parte do preço mais
+alto do Especial pode ser <b>frete</b>, não só política comercial — vale confirmar com o time de
+logística antes de qualquer ajuste de preço nesse grupo.</div>
+
+<p class="img-caption">UFs sobrerrepresentadas no grupo Especial (vs. participação na base toda)</p>
+<img class="fig" src="../2.segmentacao_hibrida/uf_sobrerrepresentacao_especial.png" alt="Sobrerrepresentação de UFs no cluster Especial" style="max-width:520px; margin-inline:auto;">
+
+<p>Testamos o valor de frete diretamente como uma das características usadas para formar os grupos,
+mas os números pioraram a qualidade da divisão — então ele não entra na formação dos grupos, só
+como informação extra pra entender o que vemos.</p>
+
+<p class="img-caption">Frete médio por m³, por grupo</p>
+<img class="fig" src="../2.segmentacao_hibrida/frete_por_cluster.png" alt="Frete médio por cluster" style="max-width:480px; margin-inline:auto;">
+
+<div class="callout"><b class="title">O padrão se confirma dentro do próprio grupo Especial</b>
+Olhando frete de Mato Grosso/MS <i>dentro</i> de cada grupo (não só a participação deles na base),
+o padrão fica ainda mais claro: no Especial, clientes de MT/MS pagam <b>R$ 919/m³</b> de frete,
+contra R$ 552/m³ do resto do grupo — <b>66% a mais</b>. É a maior diferença entre os 4 grupos (no
+Médio, a diferença é de só 3%). Não é só "o Especial tem mais gente de MT/MS" — dentro do próprio
+grupo, MT/MS paga desproporcionalmente mais frete.</div>
+
+<p class="img-caption">Frete médio (R$/m³): Mato Grosso/MS vs. resto da base, dentro de cada grupo</p>
+<img class="fig" src="../2.segmentacao_hibrida/frete_mtms_vs_resto_por_cluster.png" alt="Frete Mato Grosso/MS vs resto por cluster" style="max-width:600px; margin-inline:auto;">
 
 <h2>8. Onde focar primeiro</h2>
-<p>Das 45 combinações grupo × família, a receita não se distribui igualmente — poucas concentram a maior
-parte. Isso ajuda a decidir por onde começar, em vez de tentar mexer nas 45 de uma vez.</p>
+<p>Das 40 combinações grupo × família, a receita não se distribui igualmente — poucas concentram a maior
+parte. Isso ajuda a decidir por onde começar, em vez de tentar mexer nas 40 de uma vez.</p>
 <p class="img-caption">Poucos segmentos já respondem pela maior parte da receita total</p>
-<img class="fig" src="../4.apresentacao/fig5_pareto_segmentos.png" alt="Concentração de receita por segmento">
+<img class="fig" src="../2.segmentacao_hibrida/pareto_segmentos.png" alt="Concentração de receita por segmento">
 <div class="callout"><b class="title">Leitura prática</b>
-16 das 45 combinações já cobrem 80% da receita total. Faz sentido validar e agir sobre essas primeiro,
-em vez de tentar cobrir as 45 de uma vez.</div>
+16 das 40 combinações já cobrem 80% da receita total. Faz sentido validar e agir sobre essas primeiro,
+em vez de tentar cobrir as 40 de uma vez.</div>
 
 <h2>9. Conclusões e próximos passos</h2>
 <ul>
@@ -212,36 +398,52 @@ em vez de tentar cobrir as 45 de uma vez.</div>
 o time comercial deve confirmar se fazem sentido na prática antes de virarem política oficial.</li>
 <li><b>Use os grupos para pensar preço de forma diferenciada</b>, começando pelas combinações que já
 concentram a maior parte da receita (seção 8).</li>
-<li><b>Investigue o Nicho Premium antes de mexer no preço dele.</b> É o único grupo definido por pagar
-mais — vale entender a causa antes de qualquer ajuste.</li>
+<li><b>Investigue o grupo Especial antes de mexer no preço dele.</b> É o único grupo definido por pagar
+mais e ter margem mais baixa apesar do volume pequeno — vale entender a causa antes de qualquer ajuste.</li>
 <li><b>Isso não é definitivo.</b> Comportamento de compra muda com o tempo; recomendamos reprocessar essa
 segmentação a cada trimestre e comparar se os grupos continuam fazendo sentido.</li>
 <li><b>Isso é um ponto de partida, não substitui o julgamento comercial.</b> Os dados mostram padrões;
 cabe ao time decidir o que fazer com eles.</li>
+<li><b>Próximo passo: análise de safra para o recorte agro (4,2% da base).</b> Cruzar o CNAE de
+cada cliente agro com o calendário de colheita da cultura correspondente, para testar uma feature de
+sazonalidade específica desse grupo.</li>
 </ul>
 
 <h2>Perguntas frequentes</h2>
 <div class="faq-item"><div class="q">Por que o preço entrou na conta, se o objetivo é decidir o preço?</div>
 <p>Não usamos o preço para <i>prever</i> nada — usamos para <i>descrever</i> o comportamento atual dos
-clientes, do mesmo jeito que olhamos volume ou frequência. Sem olhar o preço, o grupo Nicho Premium
-(que hoje paga bem mais que os demais) ficaria escondido dentro do grupo Base Padrão, porque nas outras
-5 características eles são parecidos. É o preço que revela esse grupo.</p></div>
+clientes, do mesmo jeito que olhamos volume ou recência. Sem olhar o preço, o grupo Especial (que hoje
+paga bem mais que os demais) ficaria escondido dentro do grupo Pequeno, porque nas outras características
+eles são parecidos. É o preço que revela esse grupo.</p></div>
 
 <div class="faq-item"><div class="q">O "preço médio pago" é o mesmo que "ticket médio"?</div>
 <p>Não. Ticket médio seria receita dividida pelo número de compras (quanto vale uma compra típica). O que
 usamos aqui é receita dividida por volume — quanto custa, em média, uma unidade de volume para aquele
 cliente, misturando todos os produtos que ele leva.</p></div>
 
-<div class="faq-item"><div class="q">Esses 5 grupos são definitivos?</div>
-<p>Não. São o resultado de uma primeira rodada de análise, feita com dados até setembro de 2026.
-Comportamento de cliente muda — por isso a recomendação é reprocessar essa segmentação periodicamente
-(sugestão: a cada trimestre) e comparar se os grupos continuam parecidos.</p></div>
+<div class="faq-item"><div class="q">Por que a frequência de compra saiu da conta do modelo?</div>
+<p>Ela ainda aparece no cruzamento de famílias (seção 7), mas deixou de ser usada para formar os grupos —
+e não é (só) por causa de um problema de dado antigo. A forma original de calcular frequência (número de
+compras por mês) ficava artificialmente alta para clientes cujos pedidos são entregues em várias remessas
+separadas — cada remessa contava como uma "compra" a mais, mesmo sendo o mesmo pedido. Corrigimos isso
+contando pedidos únicos em vez de remessas. Testamos essa versão corrigida
+como uma possível 6ª variável do modelo e ela realmente melhora os números — só que, ao usá-la, o grupo
+<b>Especial</b> (o achado mais importante desta análise) deixa de existir: 94% desses clientes se misturam
+de volta no grupo Pequeno, e o preço mais alto que os diferencia some do resultado. Preferimos manter um
+modelo com números um pouco mais modestos, mas que preserva o grupo mais acionável para o negócio. Em vez
+de frequência, usamos recência (há quanto tempo o cliente não compra) para cobrir a dimensão de
+comportamento ao longo do tempo.</p></div>
 
-<div class="faq-item"><div class="q">Por que 5 grupos, e não 3 ou 10?</div>
-<p>Testamos diferentes quantidades. Com menos grupos, perdíamos diferenças importantes (ex: o Nicho
-Premium ficaria escondido dentro de um grupo maior). Com mais grupos, começávamos a criar divisões
-artificiais, sem diferença prática real entre elas. Cinco foi o número que equilibrou melhor as duas
-coisas.</p></div>
+<div class="faq-item"><div class="q">Esses 4 grupos são definitivos?</div>
+<p>Não. São o resultado desta rodada de análise, feita com dados até setembro de 2026. Comportamento de
+cliente muda — por isso a recomendação é reprocessar essa segmentação periodicamente (sugestão: a cada
+trimestre) e comparar se os grupos continuam parecidos.</p></div>
+
+<div class="faq-item"><div class="q">Por que 4 grupos, e não 3 ou 5?</div>
+<p>Testamos várias quantidades. Com 3 grupos, o grupo Especial (que paga mais e tem margem menor) ficava
+escondido dentro do grupo Pequeno — misturado com clientes pequenos "normais". Com 4 grupos, esse padrão
+aparece separado e vira algo acionável. Com mais grupos que isso, começávamos a criar divisões
+artificiais, sem diferença prática real entre elas.</p></div>
 
 <footer class="foot">
 Este documento resume, em linguagem simples, o processo descrito em detalhe técnico no

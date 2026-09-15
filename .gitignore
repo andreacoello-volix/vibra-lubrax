@@ -18,3 +18,8 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Large raw data and caches (not meant for version control)
+inputs/raw/
+outputs/cache/
+outputs/4.CNAE/raw_rf_cnpj_2026-08/
+
